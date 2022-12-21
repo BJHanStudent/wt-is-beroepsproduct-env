@@ -17,12 +17,17 @@
                 <h2 class="MainTitel">Gelre Airport</h2>
             </li>
             <li class="navLink"><a href="index.php">Home</a></li>
-            <li class="navLink"><a href="passagierPortal.php">Passagier</a></li>
-            <li class="navLink"><a href="login.php">Medewerker</a></li>
         </ul>
     </nav>
     <main>
-        <img class="MainPageImage" src="images/Mainbackground.jpg" alt="">
+        <form action="medewerkersPortal.php" method="post">
+            <div class="container">
+                <h2>Login</h2>
+                <input type="email" name="email" placeholder="Email" required><br>
+                <input type="password" name="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Wachtwoord moet bestaan uit 8 karakters waarvan een nummer hoofd en kleine letter" required><br>
+                <input type="submit" name="registeruser" value="Inloggen">
+            </div>
+        </form>
     </main>
     <footer>
         <ul>

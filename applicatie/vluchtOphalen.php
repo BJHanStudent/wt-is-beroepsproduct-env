@@ -17,12 +17,17 @@
                 <h2 class="MainTitel">Gelre Airport</h2>
             </li>
             <li class="navLink"><a href="index.php">Home</a></li>
-            <li class="navLink"><a href="passagierPortal.php">Passagier</a></li>
-            <li class="navLink"><a href="login.php">Medewerker</a></li>
+            <li class="navLink"><a href="login.php">Inloggen</a></li>
         </ul>
     </nav>
     <main>
-        <img class="MainPageImage" src="images/Mainbackground.jpg" alt="">
+        <form action="vluchtDetails.php" method="post">
+            <div class="container">
+                <h2>Vul gegevens in</h2>
+                <input type="text" name="vluchtnummer" placeholder="vluchtnummer" required><br>
+                <input type="submit" name="Vluchtophalen" value="Vlucht ophalen">
+            </div>
+        </form>
     </main>
     <footer>
         <ul>

@@ -17,12 +17,29 @@
                 <h2 class="MainTitel">Gelre Airport</h2>
             </li>
             <li class="navLink"><a href="index.php">Home</a></li>
-            <li class="navLink"><a href="passagierPortal.php">Passagier</a></li>
-            <li class="navLink"><a href="login.php">Medewerker</a></li>
         </ul>
     </nav>
     <main>
-        <img class="MainPageImage" src="images/Mainbackground.jpg" alt="">
+        <div class="optionGrid">
+            <div>
+                <a href="vluchtOphalen.php">
+                    <img src="images/Plane.png" alt=""><br>
+                    <h4>Vlucht ophalen</h4>
+                </a>
+            </div>
+            <div>
+                <a href="zelfInchecken.php">
+                    <img src="images/Passenger.png" alt=""><br>
+                    <h4>Zelf inchecken</h4>
+                </a>
+            </div>
+            <div class="GridColumnFullWidth">
+                <a href="bagageInchecken.html">
+                    <img src="images/Suitcase.png" alt=""><br>
+                    <h4>Bagage inchecken</h4>
+                </a>
+            </div>
+        </div>
     </main>
     <footer>
         <ul>

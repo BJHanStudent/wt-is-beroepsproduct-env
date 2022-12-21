@@ -17,12 +17,23 @@
                 <h2 class="MainTitel">Gelre Airport</h2>
             </li>
             <li class="navLink"><a href="index.php">Home</a></li>
-            <li class="navLink"><a href="passagierPortal.php">Passagier</a></li>
-            <li class="navLink"><a href="login.php">Medewerker</a></li>
         </ul>
     </nav>
     <main>
-        <img class="MainPageImage" src="images/Mainbackground.jpg" alt="">
+        <div class="flightDetails">
+            <h1>Vlucht details</h1>
+            <img src="images/PlaneToDestination.png" alt="">
+            <h4> AMS 9:45 MRS 10:45</h4>
+            <hr>
+            <ul>
+                <li>Vluchtnummer: KL3601</li>
+                <li>Vluchtmaatschappij: KLM</li>
+                <li>vertrekdatum: 20-12-2022</li>
+                <li>vertrektijd: 9:45</li>
+                <li>aankomst: 10:45</li>
+                <li>Bagage: 20kg</li>
+            </ul>
+        </div>
     </main>
     <footer>
         <ul>
