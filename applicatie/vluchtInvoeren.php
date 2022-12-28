@@ -1,3 +1,22 @@
+<?php 
+require_once('db_connectie.php');
+require_once('./components/functions.php');
+$data = "";
+
+if(isset($_POST['vluchtinvoeren'])){
+    addflight(
+        $_POST['bestemming'],
+        $_POST['gatecode'],
+        $_POST['max_aantal'],
+        $_POST['max_gewicht_pp']
+        ,$_POST['max_totaalgewicht']
+        ,$_POST['vertrektijd'],
+        $_POST['maatschappijcode']);
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,28 +39,21 @@
         </ul>
     </nav>
     <main>
-        <form class="loginform" action="medewerkersPortal.php" method="post">
+    <form class="loginform" action="vluchtinvoeren.php" method="post">
             <div class="container">
                 <h2>Vul gegevens in</h2>
-                <input type="text" name="vluchtnummer" placeholder="vluchtnummer" required><br>
-                <input type="text" name="vliegmaatschappij" placeholder="Vliegmaatschappij" required><br>
-                <input type="text" name="verteklocatie" placeholder="Verteklocatie" required><br>
-                <input type="text" name="Bestemming" placeholder="Bestemming" required><br>
-                <input type="date" name="Vertrekdatum" required><br>
-                <input type="submit" name="Vluchtophalen" value="Vlucht invoeren">
+                <input type="text" name="maatschappijcode" placeholder="Vliegmaatschappij" required><br>
+                <input type="text"  name="gatecode" placeholder="Gatecode" required><br>
+                <input type="text" name="max_aantal" placeholder="Max aantal" required><br>
+                <input type="text" name="max_gewicht_pp" placeholder="Max gewicht pp" required><br>
+                <input type="text" name="max_totaalgewicht" placeholder="Totaalgewicht" required><br>
+                <input type="text" name="bestemming" placeholder="Bestemming" required><br>
+                <input type="datetime-local" name="vertrektijd" placeholder="Vertrektijd" required><br>
+                <input type="submit" name="vluchtinvoeren" value="Vlucht invoeren">
             </div>
         </form>
     </main>
-    <footer>
-        <ul>
-            <li>
-                <a href="privacyVerklaring.html">Privacy verklaring</a>
-            </li>
-            <li>
-                <a href="#">Copyright Gelere Airport 2022</a>
-            </li>
-        </ul>
-    </footer>
+    
 </body>
 
 </html>

@@ -1,3 +1,31 @@
+<?php  
+require_once('db_connectie.php');
+$conn = maakVerbinding();
+$data = "";
+$vluchtnummer = $_POST['vluchtnummer'];
+$sql = "SELECT * FROM  Vlucht where vluchtnummer = :vluchtnummer ";
+$stm = $conn->prepare($sql);
+$stm->execute([
+    "vluchtnummer"=>$vluchtnummer
+]
+);
+
+foreach($stm as $row){
+    $data.= "<ul>
+    <li>".$row['vluchtnummer']."</li>
+    <li>".$row['bestemming']."</li>
+    <li>".$row['gatecode']."</li>
+    <li>".$row['max_aantal']."</li>
+    <li>".$row['max_gewicht_pp']."</li>
+    <li>".$row['max_totaalgewicht']."</li>
+    <li>".$row['vertrektijd']."</li>
+    <li>".$row['maatschappijcode']."</li>
+    "
+    ;  
+    $data.="</ul>";
+  }
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,20 +53,13 @@
             <img src="images/PlaneToDestination.png" alt="">
             <h4> AMS 9:45 MRS 10:45</h4>
             <hr>
-            <ul>
-                <li>Vluchtnummer: KL3601</li>
-                <li>Vluchtmaatschappij: KLM</li>
-                <li>vertrekdatum: 20-12-2022</li>
-                <li>vertrektijd: 9:45</li>
-                <li>aankomst: 10:45</li>
-                <li>Bagage: 20kg</li>
-            </ul>
+        <?= $data ?>
         </div>
     </main>
     <footer>
         <ul>
             <li>
-                <a href="privacyVerklaring.html">Privacy verklaring</a>
+                <a href="privacyVerklaring.php">Privacy verklaring</a>
             </li>
             <li>
                 <a href="#">Copyright Gelere Airport 2022</a>

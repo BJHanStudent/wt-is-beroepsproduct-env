@@ -1,3 +1,8 @@
+<?php 
+require_once('./components/functions.php');
+loggedincheck();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

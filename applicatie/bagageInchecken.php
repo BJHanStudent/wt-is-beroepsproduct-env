@@ -1,3 +1,22 @@
+<?php 
+ require_once('db_connectie.php');
+ require_once('./components/functions.php');
+
+
+if(isset($_POST['bagageinchecken'])){
+    if(checkcargospace($_POST['passagiernummer'],$_POST['bagagegewicht']) > 0){
+        addcase(
+            $_POST['passagiernummer'],
+            $_POST['bagagegewicht']);
+            echo "Bagage toegevoegd";
+    }else {
+        echo "Er is geen ruimte meer voor bagage";
+    }
+    
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,24 +41,17 @@
         </div>
     </nav>
     <main>
-        <form action="medewerkersPortal.html" method="post">
+        <form action="bagageInchecken.php" method="post">
             <div class="container">
                 <h2>Bagage inchecken</h2>
-                <input type="text" name="vluchtnummer" placeholder="Vluchtnummer" required><br>
-                <input type="text" name="Ticketnummer" placeholder="Ticketnummer" required><br>
+                <input type="text" name="passagiernummer" placeholder="passagiernummer" required><br>
                 <label for="Bagagegewicht">Gewicht</label>
-                <select name="Bagagegewicht" id="Bagagegewicht">
+                <select name="bagagegewicht" id="Bagagegewicht">
                     <option value="10">10kg</option>
                     <option value="20">20kg</option>
                     <option value="30">30kg</option>
                 </select>
-                <label for="Bagagehoeveelheid">Aantal koffers</label>
-                <select name="Bagagehoeveelheid" id="Bagagehoeveelheid">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-                <input type="submit" name="Passagierinvoeren" value="Check in">
+                <input type="submit" name="bagageinchecken" value="Check in">
             </div>
         </form>
     </main>

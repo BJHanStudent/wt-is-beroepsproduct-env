@@ -34,7 +34,7 @@
                 </a>
             </div>
             <div class="GridColumnFullWidth">
-                <a href="bagageInchecken.html">
+                <a href="bagageInchecken.php">
                     <img src="images/Suitcase.png" alt=""><br>
                     <h4>Bagage inchecken</h4>
                 </a>

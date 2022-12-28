@@ -1,3 +1,26 @@
+<?php 
+ require_once('db_connectie.php');
+ require_once('./components/functions.php');
+
+ 
+if(isset($_POST['passagierinvoeren'])){
+    if(checkpassengerlimit($_POST['vluchtnummer']) > 0){
+        addpassenger(
+            $_POST['naam'],
+            $_POST['vluchtnummer'],
+            $_POST['geslacht'],
+            $_POST['balienummer']
+            ,$_POST['stoel']
+            ,$_POST['inchecktijdstip']);   
+            echo "passagieringecheckd";
+    }else {
+        echo "Vlucht is vol";
+    }
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,17 +44,22 @@
         </ul>
     </nav>
     <main>
-        <form action="medewerkersPortal.html" method="post">
+        <form action="zelfinchecken.php" method="post">
             <div class="container">
                 <h2>Vul gegevens in</h2>
                 <input type="text" name="vluchtnummer" placeholder="Vluchtnummer" required><br>
-                <input type="text" name="Voornaam" placeholder="Voornaam" required><br>
-                <input type="text" name="Achternaam" placeholder="Voornaam" required><br>
-                <input type="email" name="email" placeholder="Email" required><br>
-                <input type="text" name="Ticketnummer" placeholder="Ticketnummer" required><br>
-                <input type="submit" name="Passagierinvoeren" value="Check in">
+                <input type="text" name="naam" placeholder="Voornaam" required><br>  
+                    <select name="geslacht">
+                    <option value="M">Man</option>
+                    <option value="V">Vrouw</option>
+                    </select><br>
+                    <input type="number" name="balienummer" placeholder="Balienummer" min="1" required><br>
+                    <input type="text" name="stoel" placeholder="Stoelnummer"  required><br>
+                    <input type="datetime-local" name="inchecktijdstip" placeholder="inchecktijdstip" required><br>
+                <input type="submit" name="passagierinvoeren" value="Checkin">
             </div>
         </form>
+        
     </main>
     <footer>
         <ul>

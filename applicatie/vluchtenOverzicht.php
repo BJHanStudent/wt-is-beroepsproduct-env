@@ -1,43 +1,18 @@
 <?php 
 require_once('db_connectie.php');
+require_once('./components/functions.php');
+loggedincheck();
 
 $data= '';
-if(isset($_POST['Tijd'])){
- $data = getOverzicht('vertrektijd');
-}
-if(isset($_POST['Vluchtmaatschappij'])){
-   $data = getOverzicht('maatschappijcode');
+
+if(isset($_POST['vertrektijd'])){
+ $data = getOverzicht($_POST['vertrektijd']);
+} else if(isset($_POST['maatschappijcode'])){
+   $data = getOverzicht($_POST['maatschappijcode']);
 }else{
-    $data = getOverzicht(null);
+  $data =  getOverzicht();
 }
-function getOverzicht($orderby){
-    $conn = maakVerbinding();
-    if($orderby != null){
-        $sql = "SELECT * FROM  Vlucht order by ".$orderby." ";
-    }else{
-        $sql = "SELECT * FROM  Vlucht ";
-    }
-    $stm = $conn->prepare($sql);
-    $stm->execute();
-    $data = "";
-    
-    foreach($stm as $row){
-      $data.= "<tr>
-      <td>".$row['vluchtnummer']."</td>
-      <td>".$row['bestemming']."</td>
-      <td>".$row['gatecode']."</td>
-      <td>".$row['max_aantal']."</td>
-      <td>".$row['max_gewicht_pp']."</td>
-      <td>".$row['max_totaalgewicht']."</td>
-      <td>".$row['vertrektijd']."</td>
-      <td>".$row['maatschappijcode']."</td>
-      "
-      
-      ;  
-      $data.="</tr>";
-    }
-    return $data;
-}
+
 
 ?>
 
@@ -81,8 +56,8 @@ function getOverzicht($orderby){
                             <button class="dropbtn">Sorteer op</button>
                             <div class="dropdown-content">
                                 <form action="vluchtenOverzicht.php" method="POST">
-                                    <input type="submit" name="Tijd" value="Tijd">
-                                    <input type="submit" name="Vluchtmaatschappij" value="Vluchtmaatschappij">
+                                    <input type="submit" name="vertrektijd" value="vertrektijd">
+                                    <input type="submit" name="maatschappijcode" value="maatschappijcode">
                                 </form>
                             </div>
                         </div>
