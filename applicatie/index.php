@@ -1,3 +1,6 @@
+<?php 
+require_once('./components/functions.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 

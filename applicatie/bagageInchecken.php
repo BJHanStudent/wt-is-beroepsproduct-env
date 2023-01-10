@@ -8,9 +8,9 @@ if(isset($_POST['bagageinchecken'])){
         addcase(
             $_POST['passagiernummer'],
             $_POST['bagagegewicht']);
-            echo "Bagage toegevoegd";
+            generatemessage("Bagage toegevoegd", false);
     }else {
-        echo "Er is geen ruimte meer voor bagage";
+        generatemessage("Er is geen ruimte meer voor bagage", true);
     }
     
 }

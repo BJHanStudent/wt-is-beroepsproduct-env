@@ -1,29 +1,7 @@
 <?php  
 require_once('db_connectie.php');
-$conn = maakVerbinding();
-$data = "";
-$vluchtnummer = $_POST['vluchtnummer'];
-$sql = "SELECT * FROM  Vlucht where vluchtnummer = :vluchtnummer ";
-$stm = $conn->prepare($sql);
-$stm->execute([
-    "vluchtnummer"=>$vluchtnummer
-]
-);
-
-foreach($stm as $row){
-    $data.= "<ul>
-    <li>".$row['vluchtnummer']."</li>
-    <li>".$row['bestemming']."</li>
-    <li>".$row['gatecode']."</li>
-    <li>".$row['max_aantal']."</li>
-    <li>".$row['max_gewicht_pp']."</li>
-    <li>".$row['max_totaalgewicht']."</li>
-    <li>".$row['vertrektijd']."</li>
-    <li>".$row['maatschappijcode']."</li>
-    "
-    ;  
-    $data.="</ul>";
-  }
+require_once('./components/functions.php');
+$data = getflightdetails($_POST['vluchtnummer']);
 
 ?>
 <!DOCTYPE html>

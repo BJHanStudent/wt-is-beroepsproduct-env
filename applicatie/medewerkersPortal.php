@@ -1,6 +1,10 @@
 <?php 
 require_once('./components/functions.php');
 loggedincheck();
+
+if(isset($_POST['logout'])){
+  logout();
+}
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +26,8 @@ loggedincheck();
                 <h2 class="MainTitel">Gelre Airport</h2>
             </li>
             <li class="navLink"><a href="index.php">Home</a></li>
-            <li class="navLink"><a href="login.php">Uitloggen</a></li>
+            <li class="navLink"><form class="navigation_form" method="POST"  action="medewerkersPortal.php" >
+                <input type="submit" name="logout" value="Uitloggen" ></li>
         </ul>
     </nav>
     <main>

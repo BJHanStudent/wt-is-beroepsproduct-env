@@ -1,11 +1,5 @@
 <?php 
 session_start();
-function loggedincheck() {
-   if( $_SESSION['loggedin'] != true){
-    header('Location: index.php');
-   }
-}
-
 
 function generatenewID($table,$item){
     $newflightnumber = null;
@@ -19,6 +13,52 @@ function generatenewID($table,$item){
    return $newflightnumber+1;
 }
 
+function generatemessage($message,$error){
+   if($error == false){
+    echo "<div class='succesmessage'> <h2> ".$message."  </h2> </div>";
+   }else{
+    echo "<div class='errormessage'> <h2> ".$message."  </h2> </div>";;
+   }
+}
+
+//====================================================================== 
+//Functies voor login
+
+function loggedincheck() {
+   if( $_SESSION['loggedin'] != true){
+    header('Location: index.php');
+   }
+}
+
+function logout() {
+    session_unset();
+    session_destroy();
+    header('Location: index.php');
+ }
+
+
+function checklogin($username,$password){
+    $username = htmlspecialchars($username);
+    $salt = 'hjiqjioqwpemkrpm2k34i9u0wefjiwmklenfmwkpa!@$%';
+    $conn = maakVerbinding();
+    $password = $password . $salt;
+    $hashed = password_hash($password,PASSWORD_DEFAULT);
+   // hashed'$2y$10$Lnb49KCskoQSF3mvoAA0hOOHT2JI.pwOiNLhANLjmV4odvgel/eDm'; //Test@2001testhjiqjioqwpemkrpm2k34i9u0wefjiwmklenfmwkpa!@$%
+if(password_verify($password,$hashed)){
+    $sql = "SELECT Uid from Medewerkers where naam = :username and password = :password ";
+    $stm = $conn->prepare($sql);
+    if($stm->execute([
+        'username'=> $username,
+        'password'=> $hashed
+    ])){
+      $_SESSION['loggedin'] = true;
+      header('Location: medewerkersPortal.php');
+    }
+}
+}
+
+//======================================================================
+//Functie voor toevoegen vlucht
 
 
 function addflight($bestemming,$gatecode,$max_aantal,$max_gewicht_pp,$max_totaalgewicht,$vertrektijd,$maatschappijcode){
@@ -43,11 +83,14 @@ function addflight($bestemming,$gatecode,$max_aantal,$max_gewicht_pp,$max_totaal
     );
 }
 
+//======================================================================
+//Functies voor toevoegen passagiers
+
 function addpassenger($naam,$vluchtnummer,$geslacht,$balienummer,$stoel,$inchecktijdstip){
     $conn = maakVerbinding();
     $passagiernummer = generatenewID('Passagier','passagiernummer');
     $inchecktijdstip = date_create($inchecktijdstip);
-    $inchecktijdstip= $inchecktijdstip->format('Y-m-d H:i:s');
+    $inchecktijdstip = $inchecktijdstip->format('Y-m-d H:i:s');
 
     $sql = "INSERT INTO Passagier (passagiernummer,naam,vluchtnummer,geslacht,balienummer,stoel,inchecktijdstip)
     VALUES (:passagiernummer,:naam,:vluchtnummer,:geslacht,:balienummer,:stoel,:inchecktijdstip)";
@@ -81,7 +124,8 @@ function checkpassengerlimit($flight){
 
  }
 
-
+//======================================================================
+//Functie voor toevoegen bagage
 
 
 function addcase($passagiernummer,$bagagewicht){
@@ -124,7 +168,39 @@ function checkcargospace($passengernumber,$luggage){
  }
 
 
-function getOverzicht($orderby =''){
+ //======================================================================
+ //Functie voor ophalen vlucht gegevens
+
+ function getflightdetails($flightnumber){
+    $conn = maakVerbinding();
+    $sql = "SELECT * FROM  Vlucht where vluchtnummer = :vluchtnummer ";
+    $stm = $conn->prepare($sql);
+    $data = "";
+    $stm->execute([
+        "vluchtnummer"=>$flightnumber
+    ]
+    );
+    
+    foreach($stm as $row){
+        $data.= "<ul>
+        <li>".$row['vluchtnummer']."</li>
+        <li>".$row['bestemming']."</li>
+        <li>".$row['gatecode']."</li>
+        <li>".$row['max_aantal']."</li>
+        <li>".$row['max_gewicht_pp']."</li>
+        <li>".$row['max_totaalgewicht']."</li>
+        <li>".$row['vertrektijd']."</li>
+        <li>".$row['maatschappijcode']."</li>
+        "
+        ;  
+        $data.="</ul>";
+      }
+      return $data;
+}
+
+
+
+function getflightoverview($orderby =''){
     $conn = maakVerbinding();
 
     $sql = "SELECT * FROM Vlucht ";
@@ -155,5 +231,7 @@ function getOverzicht($orderby =''){
     }
     return $data;
 }
+
+//======================================================================
 
 ?>

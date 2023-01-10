@@ -2,6 +2,14 @@
  require_once('db_connectie.php');
  require_once('./components/functions.php');
 
+ $balieopties = "";
+ $conn = maakVerbinding();
+ $sql = "SELECT balienummer FROM Balie ";
+ $stm = $conn->prepare($sql);
+ $stm->execute();
+ foreach($stm as $row){
+     $balieopties.="<option value='".$row['balienummer']."'>".$row['balienummer']."</option>";
+ }
  
 if(isset($_POST['passagierinvoeren'])){
     if(checkpassengerlimit($_POST['vluchtnummer']) > 0){
@@ -12,9 +20,9 @@ if(isset($_POST['passagierinvoeren'])){
             $_POST['balienummer']
             ,$_POST['stoel']
             ,$_POST['inchecktijdstip']);   
-            echo "passagieringecheckd";
+            generatemessage("passagier ingechecked", false);
     }else {
-        echo "Vlucht is vol";
+        generatemessage("Vlucht is vol of bestaat niet", true);
     }
 }
 
@@ -53,7 +61,9 @@ if(isset($_POST['passagierinvoeren'])){
                     <option value="M">Man</option>
                     <option value="V">Vrouw</option>
                     </select><br>
-                    <input type="number" name="balienummer" placeholder="Balienummer" min="1" required><br>
+                    <select name="balienummer">
+                    <?= $balieopties  ?>
+                    </select><br>
                     <input type="text" name="stoel" placeholder="Stoelnummer"  required><br>
                     <input type="datetime-local" name="inchecktijdstip" placeholder="inchecktijdstip" required><br>
                 <input type="submit" name="passagierinvoeren" value="Checkin">
@@ -61,16 +71,6 @@ if(isset($_POST['passagierinvoeren'])){
         </form>
         
     </main>
-    <footer>
-        <ul>
-            <li>
-                <a href="privacyVerklaring.html">Privacy verklaring</a>
-            </li>
-            <li>
-                <a href="#">Copyright Gelere Airport 2022</a>
-            </li>
-        </ul>
-    </footer>
 </body>
 
 </html>

@@ -1,16 +1,15 @@
 <?php 
 require_once('db_connectie.php');
 require_once('./components/functions.php');
-$data = "";
 
 if(isset($_POST['vluchtinvoeren'])){
     addflight(
         $_POST['bestemming'],
         $_POST['gatecode'],
         $_POST['max_aantal'],
-        $_POST['max_gewicht_pp']
-        ,$_POST['max_totaalgewicht']
-        ,$_POST['vertrektijd'],
+        $_POST['max_gewicht_pp'],
+        $_POST['max_totaalgewicht'],
+        $_POST['vertrektijd'],
         $_POST['maatschappijcode']);
 }
 
