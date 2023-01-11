@@ -39,8 +39,8 @@ if(isset($_POST['login'])){
         <form action="login.php" method="post">
             <div class="container">
                 <h2>Login</h2>
-                <input type="name" name="name" placeholder="Username" required><br>
-                <input type="password" name="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Wachtwoord moet bestaan uit 8 karakters waarvan een nummer hoofd en kleine letter" required><br>
+                <input value="testuser" type="name" name="name" placeholder="Username" required><br>
+                <input value="Test@2001test" type="password" name="password" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Wachtwoord moet bestaan uit 8 karakters waarvan een nummer hoofd en kleine letter" required><br>
                 <input type="submit" name="login" value="Inloggen">
             </div>
         </form>
