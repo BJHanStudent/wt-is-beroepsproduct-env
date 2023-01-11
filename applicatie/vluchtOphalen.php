@@ -1,3 +1,6 @@
+<?php 
+require_once('./components/functions.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +20,13 @@
                 <h2 class="MainTitel">Gelre Airport</h2>
             </li>
             <li class="navLink"><a href="index.php">Home</a></li>
-            <li class="navLink"><a href="login.php">Inloggen</a></li>
+            <?php
+             if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
+                echo '  <li class="navLink"><form class="navigation_form" method="POST"  action="medewerkersPortal.php" >
+                <input type="submit" name="logout" value="Uitloggen" ></li>';
+            }else  {
+                echo '<li class="navLink"><a href="login.php">Medewerker</a></li>';
+            } ?>
         </ul>
     </nav>
     <main>

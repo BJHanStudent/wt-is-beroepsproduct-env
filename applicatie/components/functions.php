@@ -1,9 +1,10 @@
 <?php 
+require_once('db_connectie.php');
 session_start();
+$conn = maakVerbinding();
 
-function generatenewID($table,$item){
+function generatenewID($table,$item,$conn){
     $newflightnumber = null;
-    $conn = maakVerbinding();
     $sql = "SELECT max($item) from $table ";
     $stm = $conn->prepare($sql);
     $stm->execute();
@@ -37,10 +38,9 @@ function logout() {
  }
 
 
-function checklogin($username,$password){
+function checklogin($username,$password,$conn){
     $username = htmlspecialchars($username);
     $salt = 'hjiqjioqwpemkrpm2k34i9u0wefjiwmklenfmwkpa!@$%';
-    $conn = maakVerbinding();
     $password = $password . $salt;
     $hashed = password_hash($password,PASSWORD_DEFAULT);
    // hashed'$2y$10$Lnb49KCskoQSF3mvoAA0hOOHT2JI.pwOiNLhANLjmV4odvgel/eDm'; //Test@2001testhjiqjioqwpemkrpm2k34i9u0wefjiwmklenfmwkpa!@$%
@@ -61,9 +61,8 @@ if(password_verify($password,$hashed)){
 //Functie voor toevoegen vlucht
 
 
-function addflight($bestemming,$gatecode,$max_aantal,$max_gewicht_pp,$max_totaalgewicht,$vertrektijd,$maatschappijcode){
-    $conn = maakVerbinding();
-    $vluchtnummer = generatenewID('vlucht','vluchtnummer');
+function addflight($bestemming,$gatecode,$max_aantal,$max_gewicht_pp,$max_totaalgewicht,$vertrektijd,$maatschappijcode,$conn){
+    $vluchtnummer = generatenewID('vlucht','vluchtnummer',$conn);
     $vertrektijd = date_create($vertrektijd);
     $vertrektijd = $vertrektijd->format('Y-m-d H:i:s');
 
@@ -86,9 +85,8 @@ function addflight($bestemming,$gatecode,$max_aantal,$max_gewicht_pp,$max_totaal
 //======================================================================
 //Functies voor toevoegen passagiers
 
-function addpassenger($naam,$vluchtnummer,$geslacht,$balienummer,$stoel,$inchecktijdstip){
-    $conn = maakVerbinding();
-    $passagiernummer = generatenewID('Passagier','passagiernummer');
+function addpassenger($naam,$vluchtnummer,$geslacht,$balienummer,$stoel,$inchecktijdstip,$conn){
+    $passagiernummer = generatenewID('Passagier','passagiernummer',$conn);
     $inchecktijdstip = date_create($inchecktijdstip);
     $inchecktijdstip = $inchecktijdstip->format('Y-m-d H:i:s');
 
@@ -107,9 +105,8 @@ function addpassenger($naam,$vluchtnummer,$geslacht,$balienummer,$stoel,$incheck
     );
 }
 
-function checkpassengerlimit($flight){
+function checkpassengerlimit($flight,$conn){
     $limit = null;
-    $conn = maakVerbinding();
     $sql = "select Vlucht.max_aantal - count(*) from Passagier
     join Vlucht on  Passagier.vluchtnummer = Vlucht.vluchtnummer 
     where Passagier.vluchtnummer = ".$flight."
@@ -128,9 +125,8 @@ function checkpassengerlimit($flight){
 //Functie voor toevoegen bagage
 
 
-function addcase($passagiernummer,$bagagewicht){
-    $conn = maakVerbinding();
-    $objectvolgnummer = generatenewID('BagageObject','Objectvolgnummer');
+function addcase($passagiernummer,$bagagewicht,$conn){
+    $objectvolgnummer = generatenewID('BagageObject','Objectvolgnummer',$conn);
     $sql = "INSERT INTO BagageObject (passagiernummer,objectvolgnummer,gewicht)
     VALUES (:passagiernummer,:objectvolgnummer,:bagagewicht)";
     $stm = $conn->prepare($sql);
@@ -142,9 +138,8 @@ function addcase($passagiernummer,$bagagewicht){
     );
 }
 
-function checkcargospace($passengernumber,$luggage){
+function checkcargospace($passengernumber,$luggage,$conn){
     $weightlimit = null;
-    $conn = maakVerbinding();
     $sql = "select Vlucht.vluchtnummer from Vlucht
     join Passagier on Passagier.vluchtnummer = Vlucht.vluchtnummer 
     where Passagier.passagiernummer = ".$passengernumber."";
@@ -171,8 +166,7 @@ function checkcargospace($passengernumber,$luggage){
  //======================================================================
  //Functie voor ophalen vlucht gegevens
 
- function getflightdetails($flightnumber){
-    $conn = maakVerbinding();
+ function getflightdetails($flightnumber,$conn){
     $sql = "SELECT * FROM  Vlucht where vluchtnummer = :vluchtnummer ";
     $stm = $conn->prepare($sql);
     $data = "";
@@ -200,8 +194,7 @@ function checkcargospace($passengernumber,$luggage){
 
 
 
-function getflightoverview($orderby =''){
-    $conn = maakVerbinding();
+function getflightoverview($conn,$orderby =''){
 
     $sql = "SELECT * FROM Vlucht ";
     if ($orderby == 'maatschappijcode'){

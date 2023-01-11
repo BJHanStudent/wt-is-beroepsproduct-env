@@ -4,10 +4,10 @@
 
 
 if(isset($_POST['bagageinchecken'])){
-    if(checkcargospace($_POST['passagiernummer'],$_POST['bagagegewicht']) > 0){
+    if(checkcargospace($_POST['passagiernummer'],$_POST['bagagegewicht'],$conn) > 0){
         addcase(
             $_POST['passagiernummer'],
-            $_POST['bagagegewicht']);
+            $_POST['bagagegewicht'],$conn);
             generatemessage("Bagage toegevoegd", false);
     }else {
         generatemessage("Er is geen ruimte meer voor bagage", true);

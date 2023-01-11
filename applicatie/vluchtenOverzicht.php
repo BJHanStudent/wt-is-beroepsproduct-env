@@ -9,11 +9,11 @@ if(isset($_POST['logout'])){
 $data= '';
 
 if(isset($_GET['vertrektijd'])){
- $data = getflightoverview($_GET['vertrektijd']);
+ $data = getflightoverview($conn,$_GET['vertrektijd']);
 } else if(isset($_GET['maatschappijcode'])){
-   $data = getflightoverview($_GET['maatschappijcode']);
+   $data = getflightoverview($conn,$_GET['maatschappijcode']);
 }else{
-  $data =  getflightoverview();
+  $data =  getflightoverview($conn);
 }
 
 
@@ -39,7 +39,7 @@ if(isset($_GET['vertrektijd'])){
             </li>
             <li class="navLink"><a href="index.php">Home</a></li>
             <li class="navLink"><li class="navLink"><form class="navigation_form" method="POST"  action="medewerkersPortal.php" >
-                <input type="submit" name="logout" value="Uitloggen" ></li></li>
+                <input type="submit" name="logout" value="Uitloggen" ></form></li>
         </ul>
     </nav>
     <main>

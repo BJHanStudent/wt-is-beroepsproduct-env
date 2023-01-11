@@ -5,7 +5,7 @@
 
 
 if(isset($_POST['login'])){
- checklogin($_POST['name'],$_POST['password']);
+ checklogin($_POST['name'],$_POST['password'],$conn);
 }
 
 

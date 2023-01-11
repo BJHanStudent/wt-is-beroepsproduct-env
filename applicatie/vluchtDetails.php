@@ -1,7 +1,6 @@
 <?php  
-require_once('db_connectie.php');
 require_once('./components/functions.php');
-$data = getflightdetails($_POST['vluchtnummer']);
+$data = getflightdetails($_POST['vluchtnummer'],$conn);
 
 ?>
 <!DOCTYPE html>

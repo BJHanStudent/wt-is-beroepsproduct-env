@@ -27,7 +27,7 @@ if(isset($_POST['logout'])){
             </li>
             <li class="navLink"><a href="index.php">Home</a></li>
             <li class="navLink"><form class="navigation_form" method="POST"  action="medewerkersPortal.php" >
-                <input type="submit" name="logout" value="Uitloggen" ></li>
+                <input type="submit" name="logout" value="Uitloggen" ></form></li>
         </ul>
     </nav>
     <main>

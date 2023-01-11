@@ -12,14 +12,14 @@
  }
  
 if(isset($_POST['passagierinvoeren'])){
-    if(checkpassengerlimit($_POST['vluchtnummer']) > 0){
+    if(checkpassengerlimit($_POST['vluchtnummer'],$conn) > 0){
         addpassenger(
             $_POST['naam'],
             $_POST['vluchtnummer'],
             $_POST['geslacht'],
             $_POST['balienummer']
             ,$_POST['stoel']
-            ,$_POST['inchecktijdstip']);   
+            ,$_POST['inchecktijdstip'],$conn);   
             generatemessage("passagier ingechecked", false);
     }else {
         generatemessage("Vlucht is vol of bestaat niet", true);
@@ -48,7 +48,13 @@ if(isset($_POST['passagierinvoeren'])){
                 <h2 class="MainTitel">Gelre Airport</h2>
             </li>
             <li class="navLink"><a href="index.php">Home</a></li>
-            <li class="navLink"><a href="login.php">Inloggen</a></li>
+            <?php
+             if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
+                echo '  <li class="navLink"><form class="navigation_form" method="POST"  action="medewerkersPortal.php" >
+                <input type="submit" name="logout" value="Uitloggen" ></li>';
+            }else  {
+                echo '<li class="navLink"><a href="login.php">Medewerker</a></li>';
+            } ?>
         </ul>
     </nav>
     <main>

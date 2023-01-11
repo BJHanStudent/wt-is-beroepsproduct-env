@@ -10,7 +10,7 @@ if(isset($_POST['vluchtinvoeren'])){
         $_POST['max_gewicht_pp'],
         $_POST['max_totaalgewicht'],
         $_POST['vertrektijd'],
-        $_POST['maatschappijcode']);
+        $_POST['maatschappijcode'],$conn);
 }
 
 ?>
@@ -35,6 +35,13 @@ if(isset($_POST['vluchtinvoeren'])){
                 <h2 class="MainTitel">Gelre Airport</h2>
             </li>
             <li class="navLink"><a href="index.php">Home</a></li>
+            <?php
+             if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
+                echo '  <li class="navLink"><form class="navigation_form" method="POST"  action="medewerkersPortal.php" >
+                <input type="submit" name="logout" value="Uitloggen" ></li>';
+            }else  {
+                echo '<li class="navLink"><a href="login.php">Medewerker</a></li>';
+            } ?>
         </ul>
     </nav>
     <main>
