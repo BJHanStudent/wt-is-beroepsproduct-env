@@ -15,11 +15,13 @@ function generatenewID($table,$item,$conn){
 }
 
 function generatemessage($message,$error){
+    $data = '';
    if($error == false){
-    echo "<div class='succesmessage'> <h2> ".$message."  </h2> </div>";
+    $data.= "<div class='succesmessage'> <h2> ".$message."  </h2> </div>";
    }else{
-    echo "<div class='errormessage'> <h2> ".$message."  </h2> </div>";;
+    $data.= "<div class='errormessage'> <h2> ".$message."  </h2> </div>";;
    }
+   return $data;
 }
 
 //====================================================================== 
@@ -61,23 +63,23 @@ if(password_verify($password,$hashed)){
 //Functie voor toevoegen vlucht
 
 
-function addflight($bestemming,$gatecode,$max_aantal,$max_gewicht_pp,$max_totaalgewicht,$vertrektijd,$maatschappijcode,$conn){
-    $vluchtnummer = generatenewID('vlucht','vluchtnummer',$conn);
-    $vertrektijd = date_create($vertrektijd);
-    $vertrektijd = $vertrektijd->format('Y-m-d H:i:s');
+function addflight($destination,$gatecode,$max_amount,$max_weight_pp,$max_totalweight,$departure_time,$airline_code,$conn){
+    $flightnumber= generatenewID('vlucht','vluchtnummer',$conn);
+    $departure_time = date_create($departure_time);
+    $departure_time = $departure_time->format('Y-m-d H:i:s');
 
     $sql = "INSERT INTO vlucht (vluchtnummer,bestemming,gatecode,max_aantal,max_gewicht_pp,max_totaalgewicht,vertrektijd,maatschappijcode)
     VALUES (:vluchtnummer,:bestemming,:gatecode,:max_aantal,:max_gewicht_pp,:max_totaalgewicht,:vertrektijd,:maatschappijcode)";
     $stm = $conn->prepare($sql);
     $stm->execute([
-        "vluchtnummer"=>$vluchtnummer,
-        "bestemming" =>$bestemming,
+        "vluchtnummer"=>$flightnumber,
+        "bestemming" =>$destination,
         "gatecode"=> $gatecode,
-        "max_aantal"=> $max_aantal,
-        "max_gewicht_pp"=> $max_gewicht_pp,
-        "max_totaalgewicht"=> $max_totaalgewicht,
-        "vertrektijd"=> $vertrektijd,
-        "maatschappijcode"=>$maatschappijcode
+        "max_aantal"=> $max_amount,
+        "max_gewicht_pp"=> $max_weight_pp,
+        "max_totaalgewicht"=> $max_totalweight,
+        "vertrektijd"=> $departure_time,
+        "maatschappijcode"=>$airline_code
     ]
     );
 }
@@ -85,22 +87,22 @@ function addflight($bestemming,$gatecode,$max_aantal,$max_gewicht_pp,$max_totaal
 //======================================================================
 //Functies voor toevoegen passagiers
 
-function addpassenger($naam,$vluchtnummer,$geslacht,$balienummer,$stoel,$inchecktijdstip,$conn){
+function addpassenger($name,$flightnumber,$gender,$svc_number,$chair,$inchecktime,$conn){
     $passagiernummer = generatenewID('Passagier','passagiernummer',$conn);
-    $inchecktijdstip = date_create($inchecktijdstip);
-    $inchecktijdstip = $inchecktijdstip->format('Y-m-d H:i:s');
+    $inchecktime = date_create($inchecktime);
+    $inchecktime = $inchecktime->format('Y-m-d H:i:s');
 
     $sql = "INSERT INTO Passagier (passagiernummer,naam,vluchtnummer,geslacht,balienummer,stoel,inchecktijdstip)
     VALUES (:passagiernummer,:naam,:vluchtnummer,:geslacht,:balienummer,:stoel,:inchecktijdstip)";
     $stm = $conn->prepare($sql);
     $stm->execute([
         "passagiernummer"=>$passagiernummer,
-        "naam"=>$naam,
-        "vluchtnummer" =>$vluchtnummer,
-        "geslacht"=> $geslacht,
-        "balienummer"=> $balienummer,
-        "stoel"=> $stoel,
-        "inchecktijdstip"=> $inchecktijdstip,
+        "naam"=>$name,
+        "vluchtnummer" =>$flightnumber,
+        "geslacht"=> $gender,
+        "balienummer"=> $svc_number,
+        "stoel"=> $chair,
+        "inchecktijdstip"=> $inchecktime,
     ]
     );
 }
@@ -125,15 +127,15 @@ function checkpassengerlimit($flight,$conn){
 //Functie voor toevoegen bagage
 
 
-function addcase($passagiernummer,$bagagewicht,$conn){
-    $objectvolgnummer = generatenewID('BagageObject','Objectvolgnummer',$conn);
+function addcase($passengernumber,$luggage_number,$conn){
+    $objectnumber = generatenewID('BagageObject','Objectvolgnummer',$conn);
     $sql = "INSERT INTO BagageObject (passagiernummer,objectvolgnummer,gewicht)
     VALUES (:passagiernummer,:objectvolgnummer,:bagagewicht)";
     $stm = $conn->prepare($sql);
     $stm->execute([
-        "passagiernummer"=>$passagiernummer,
-        "bagagewicht"=>$bagagewicht,
-        "objectvolgnummer" =>$objectvolgnummer,
+        "passagiernummer"=>$passengernumber,
+        "bagagewicht"=>$luggage_number,
+        "objectvolgnummer" =>$objectnumber,
     ]
     );
 }
@@ -142,19 +144,23 @@ function checkcargospace($passengernumber,$luggage,$conn){
     $weightlimit = null;
     $sql = "select Vlucht.vluchtnummer from Vlucht
     join Passagier on Passagier.vluchtnummer = Vlucht.vluchtnummer 
-    where Passagier.passagiernummer = ".$passengernumber."";
+    where Passagier.passagiernummer = :passagiernummer";
     $stm = $conn->prepare($sql);
-    $stm->execute([]);
+    $stm->execute([
+        "passagiernummer"=>$passengernumber,
+    ]);
     foreach($stm as $row){
         $flightnumber = $row[0];
         $sql = "
         select Vlucht.max_totaalgewicht - sum(BagageObject.gewicht) from Passagier
         join Vlucht on  Passagier.vluchtnummer = Vlucht.vluchtnummer 
         join BagageObject on BagageObject.passagiernummer = Passagier.passagiernummer
-        where Passagier.vluchtnummer = ".$flightnumber."
+        where Passagier.vluchtnummer = :vluchtnummer
         group by Vlucht.max_totaalgewicht";
         $stm = $conn->prepare($sql);
-        $stm->execute([]);
+        $stm->execute([
+            "vluchtnummer" =>$flightnumber
+        ]);
         foreach($stm as $row){
             $weightlimit = $row[0] - $luggage;
         }

@@ -1,6 +1,7 @@
 <?php 
 require_once('db_connectie.php');
 require_once('./components/functions.php');
+$message = '';
 
 if(isset($_POST['vluchtinvoeren'])){
     addflight(
@@ -11,6 +12,8 @@ if(isset($_POST['vluchtinvoeren'])){
         $_POST['max_totaalgewicht'],
         $_POST['vertrektijd'],
         $_POST['maatschappijcode'],$conn);
+        $message = generatemessage("Vluchtingevoerd", false);
+        
 }
 
 ?>
@@ -38,13 +41,14 @@ if(isset($_POST['vluchtinvoeren'])){
             <?php
              if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
                 echo '  <li class="navLink"><form class="navigation_form" method="POST"  action="medewerkersPortal.php" >
-                <input type="submit" name="logout" value="Uitloggen" ></li>';
+                <input type="submit" name="logout" value="Uitloggen" ></form></li>';
             }else  {
                 echo '<li class="navLink"><a href="login.php">Medewerker</a></li>';
             } ?>
         </ul>
     </nav>
     <main>
+    <?= $message ?>
     <form class="loginform" action="vluchtinvoeren.php" method="post">
             <div class="container">
                 <h2>Vul gegevens in</h2>

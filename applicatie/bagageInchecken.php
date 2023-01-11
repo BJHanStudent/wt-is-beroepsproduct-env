@@ -1,16 +1,16 @@
 <?php 
  require_once('db_connectie.php');
  require_once('./components/functions.php');
-
+ $message = '';
 
 if(isset($_POST['bagageinchecken'])){
     if(checkcargospace($_POST['passagiernummer'],$_POST['bagagegewicht'],$conn) > 0){
         addcase(
             $_POST['passagiernummer'],
             $_POST['bagagegewicht'],$conn);
-            generatemessage("Bagage toegevoegd", false);
+            $message = generatemessage("Bagage toegevoegd", false);
     }else {
-        generatemessage("Er is geen ruimte meer voor bagage", true);
+        $message = generatemessage("Er is geen ruimte meer voor bagage", true);
     }
     
 }
@@ -41,6 +41,7 @@ if(isset($_POST['bagageinchecken'])){
         </div>
     </nav>
     <main>
+        <?= $message ?>
         <form action="bagageInchecken.php" method="post">
             <div class="container">
                 <h2>Bagage inchecken</h2>

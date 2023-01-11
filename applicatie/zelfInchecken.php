@@ -1,7 +1,7 @@
 <?php 
  require_once('db_connectie.php');
  require_once('./components/functions.php');
-
+ $message = '';
  $balieopties = "";
  $conn = maakVerbinding();
  $sql = "SELECT balienummer FROM Balie ";
@@ -20,9 +20,9 @@ if(isset($_POST['passagierinvoeren'])){
             $_POST['balienummer']
             ,$_POST['stoel']
             ,$_POST['inchecktijdstip'],$conn);   
-            generatemessage("passagier ingechecked", false);
+            $message =  generatemessage("passagier ingechecked", false);
     }else {
-        generatemessage("Vlucht is vol of bestaat niet", true);
+        $message = generatemessage("Vlucht is vol of bestaat niet", true);
     }
 }
 
@@ -51,13 +51,14 @@ if(isset($_POST['passagierinvoeren'])){
             <?php
              if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
                 echo '  <li class="navLink"><form class="navigation_form" method="POST"  action="medewerkersPortal.php" >
-                <input type="submit" name="logout" value="Uitloggen" ></li>';
+                <input type="submit" name="logout" value="Uitloggen" ></form></li>';
             }else  {
                 echo '<li class="navLink"><a href="login.php">Medewerker</a></li>';
             } ?>
         </ul>
     </nav>
     <main>
+    <?= $message ?>
         <form action="zelfinchecken.php" method="post">
             <div class="container">
                 <h2>Vul gegevens in</h2>

@@ -23,7 +23,7 @@ require_once('./components/functions.php');
             <?php
              if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
                 echo '  <li class="navLink"><form class="navigation_form" method="POST"  action="medewerkersPortal.php" >
-                <input type="submit" name="logout" value="Uitloggen" ></li>';
+                <input type="submit" name="logout" value="Uitloggen" ></form></li>';
             }else  {
                 echo '<li class="navLink"><a href="login.php">Medewerker</a></li>';
             } ?>

@@ -240,17 +240,17 @@ footer a {
 }
 
 .succesmessage {
-    position: fixed;
+    position: absolute;
     padding: 20px;
     background-color: greenyellow;
     color: white;
-    bottom: 0;
+    bottom: 20;
 }
 
 .errormessage {
-    position: fixed;
+    position: absolute;
     padding: 20px;
     background-color: #f44336;
     color: white;
-    bottom: 0;
+    bottom: 20;
 }

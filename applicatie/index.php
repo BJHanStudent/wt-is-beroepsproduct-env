@@ -26,8 +26,9 @@ if(isset($_POST['logout'])){
             <li class="navLink"><a href="passagierPortal.php">Passagier</a></li>
             <?php
              if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
+                echo '<li class="navLink"><a href="medewerkersPortal.php">Medewerker</a></li>';
                 echo '  <li class="navLink"><form class="navigation_form" method="POST"  action="medewerkersPortal.php" >
-                <input type="submit" name="logout" value="Uitloggen" ></li>';
+                <input type="submit" name="logout" value="Uitloggen" ></li>';     
             }else  {
                 echo '<li class="navLink"><a href="login.php">Medewerker</a></li>';
             } ?>
